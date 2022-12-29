@@ -82,7 +82,7 @@ function Three() {
       <mesh position={[0,-1.25,3.5]}>
         <boxGeometry args={[7,0.5,0.2]}/>
         <meshStandardMaterial color={'red'}/>
-      </mesh>
+      </mesh> 
       <mesh position={[0,-1.25,-3.5]}>
         <boxGeometry args={[7,0.5,0.2]}/>
         <meshStandardMaterial color={'red'}/>
