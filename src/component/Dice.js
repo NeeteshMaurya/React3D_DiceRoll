@@ -1,4 +1,4 @@
-import React, { useRef, useState, forwardRef,useImperativeHandle } from 'react'
+import React, { useState, forwardRef,useImperativeHandle } from 'react'
 import { useTexture } from '@react-three/drei'
 import { useBox } from "@react-three/cannon";
 import * as CANNON from "cannon-es";
@@ -19,11 +19,10 @@ const Dice = (props,ref) => {
 //By using this hook we no need to use textureLoader 
   var map = useTexture(diceDetail)
 
-  const mesh = useRef()
-  // useFrame(() => {
-  //   mesh.current.rotation.x = mesh.current.rotation.y += 0.01
-  // })
-
+  // const mesh = useRef()
+  // // useFrame(() => {
+  // //   mesh.current.rotation.x = mesh.current.rotation.y += 0.01
+  // // })
   //we apply this setting in our dice by using useBox and ref
   const settings = {
     mass: 1,
@@ -56,22 +55,22 @@ const Dice = (props,ref) => {
     // velocityVector.normalize();
     // velocityVector = velocityVector.scale(velocity * 10);
 
+
+    //proviing our position,velocity to our Dice, after throw.
     if (api) {
       api.position.copy(pos);
-      //api.quaternion.set((45 * Math.PI) / 180, 0, (70 * Math.PI) / 180, 1);
-
       api.velocity.copy(velocityVector);
       api.angularVelocity.set(0, 0, 0);
     }
   };
   return (
     <>
-      <mesh ref={dice1}  >
+      <mesh ref={dice1} castShadow >
         <boxBufferGeometry attach="geometry" args={[0.4,0.4,0.4]} />
         {map.map((texture, idx) => (
           <meshBasicMaterial
             attach={`material-${idx}`}
-            map={texture}
+            map={texture} 
           />
         ))}
       </mesh>

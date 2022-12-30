@@ -15,12 +15,13 @@ function App() {
   return (
     <>
     {/* anything in a scene is called mesh . for any scene we need a geometry and a material */}
-    <Canvas> {/*when we use component it already has a camera and scene by default */}
-      <PerspectiveCamera makeDefault position={[0,9,9]} />
+    <Canvas shadows> {/*when we use component it already has a camera and scene by default */}
+      <PerspectiveCamera makeDefault position={[0,8,0]} />
       <OrbitControls enabled={false}/>
-      <ambientLight intensity={0.3} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[0, 0, 5]} />
+
+      <ambientLight intensity={0.25} />
+      <directionalLight args={['white', 1]} position={[-4, 6, 0]} castShadow />
+
       <Suspense fallback={null}> {/* if component is taking time or loading this will show what inside fallback */}
         {/* direction of gravity wrt x,y,z axis */}
         <Physics gravity={[0, -9.8, 0]} > 
@@ -30,7 +31,9 @@ function App() {
         </Physics>
       </Suspense>
     </Canvas>
+    {/* <div> */}
     <button onClick={()=>DiceRef.current.throwDice(1,0,0)}>Roll Dice</button>
+    {/* </div> */}
     </>
     );
 }
