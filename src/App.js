@@ -1,7 +1,6 @@
 import './App.css';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
-import Three from './component/Three';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import Floor from './component/Floor';
 import Walls from './component/Walls';
