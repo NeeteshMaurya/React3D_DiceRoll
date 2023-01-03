@@ -11,6 +11,12 @@ import { useRef } from 'react'
 function App() {
   //where we pass this reference we will find reference of that component of component's function
   const DiceRef = useRef();
+  let btnRef = useRef();
+
+  const clickHandler =()=>{
+    DiceRef.current.throwDice(1,0,0)
+    btnRef.current.setAttribute("disabled","disabled")
+  }
   return (
     <>
     {/* anything in a scene is called mesh . for any scene we need a geometry and a material */}
@@ -31,7 +37,7 @@ function App() {
       </Suspense>
     </Canvas>
     {/* <div> */}
-    <button onClick={()=>DiceRef.current.throwDice(1,0,0)}>Roll Dice</button>
+    <button  onClick={()=>clickHandler()}>Roll Dice</button>
     {/* </div> */}
     </>
     );
