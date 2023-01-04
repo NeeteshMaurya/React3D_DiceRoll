@@ -1,52 +1,55 @@
-import React from 'react'
-import { angleToRadians } from '../utils/angle'
-import { useBox } from "@react-three/cannon"
+import { useBox } from "@react-three/cannon";
+import { useTexture } from "@react-three/drei";
+import React from "react";
+import { boardWidth, borderWidth } from "../utils/constant";
 
 const Walls = () => {
-  const [topRef, api1] = useBox(() => ({
-    type: "Static",
-    args: [7.2,4,0.2],
-    position: [0,-1.25,-3.5],
-  }));
-  const [bottomRef, api2] = useBox(() => ({
-    type: "Static",
-    args: [7.2,0.5,0.2],
-    position: [0,-1.25,3.5],
-  }));
-  const [leftRef, api3] = useBox(() => ({
-    type: "Static",
-    args: [7.2,0.5,0.2],
-    position: [-3.5,-1.25,0],
-    rotation: [0,-(angleToRadians(90)),0],
-  }));
-  const [rightRef, api4] = useBox(() => ({
-    type: "Static",
-    position: [3.5,-1.25,0],
-    args: [7.2,4,0.2],
-    rotation: [0,-(angleToRadians(90)),0],
-  }));
-  return (
-    <>
-      <mesh ref={leftRef} rotation={[0,-(angleToRadians(90)),0]} position={[-3.5,-1.25,0]}>
-        <boxGeometry args={[7.2,0.5,0.2]}/>
-        <meshStandardMaterial color={'red'}/>
-      </mesh>
+    const argsX = [boardWidth + borderWidth * 2, borderWidth, borderWidth * 4];
+		const argsY = [boardWidth, borderWidth, borderWidth * 4];
+		const boardTexture = useTexture("./img/wood-texture.jpg");
+		const [topRef, api1] = useBox(() => ({
+			type: "Static",
+			args: argsY,
+			position: [0, boardWidth / 2 + borderWidth / 2, 0],
+		}));
+		const [bottomRef, api2] = useBox(() => ({
+			type: "Static",
+			args: argsY,
+			position: [0, -(boardWidth / 2 + borderWidth / 2), 0],
+		}));
+		const [leftRef, api3] = useBox(() => ({
+			type: "Static",
+			args: argsX,
+			position: [-(boardWidth / 2 + borderWidth / 2), 0, 0],
+			rotation: [0, 0, Math.PI / 2],
+		}));
+		const [rightRef, api4] = useBox(() => ({
+			type: "Static",
+			args: argsX,
 
-      <mesh ref={rightRef} rotation={[0,-(angleToRadians(90)),0]} position={[3.5,-1.25,0]}>
-        <boxGeometry args={[7.2,0.5,0.2]}/>
-        <meshStandardMaterial color={'red'}/>
-      </mesh>
+			position: [boardWidth / 2 + borderWidth / 2, 0, 0],
+			rotation: [0, 0, -Math.PI / 2],
+		}));
+		return (
+			<>
+				<mesh ref={topRef} receiveShadow>
+					<boxGeometry args={argsY} />
+					<meshStandardMaterial color={'red'} />
+				</mesh>
+				<mesh ref={bottomRef} receiveShadow>
+					<boxGeometry args={argsY} />
+					<meshStandardMaterial color={'red'} />
+				</mesh>
+				<mesh ref={leftRef} receiveShadow>
+					<boxGeometry args={argsX} />
+					<meshStandardMaterial color={'red'} />
+				</mesh>
+				<mesh ref={rightRef} receiveShadow>
+					<boxGeometry args={argsX} />
+					<meshStandardMaterial color={'red'} />
+				</mesh>
+			</>
+		);
+};
 
-      <mesh ref={bottomRef} position={[0,-1.25,3.5]}>
-        <boxGeometry args={[7,0.5,0.2]}/>
-        <meshStandardMaterial color={'red'}/>
-      </mesh> 
-      <mesh ref={topRef} position={[0,-1.25,-3.5]}>
-        <boxGeometry args={[7,0.5,0.2]}/>
-        <meshStandardMaterial color={'red'}/>
-      </mesh>
-    </>
-  )
-}
-
-export default Walls
+export default Walls;
