@@ -21,17 +21,12 @@ function App() {
 						<ThreeContent />
 					</Suspense>
 				</Canvas>
-				{/* <ThreeContent1 /> */}
-				<button className="btn" id="throw-btn" onClick={Throw}>
-					Throw dice
-				</button>
-				{/* <button className="btn" id="freeze-btn" onClick={Freeze}>
-					Freeze board
-				</button>
-
 				<div id="result">
 					<span id="result-value"></span>
-				</div> */}
+				</div>
+				<button className="btn" id="throw-btn" onClick={Throw}>
+					Throw dice
+				</button> 
 			</div>
 		</div>
 	);

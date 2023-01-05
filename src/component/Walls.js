@@ -4,8 +4,8 @@ import React from "react";
 import { boardWidth, borderWidth } from "../utils/constant";
 
 const Walls = () => {
-    const argsX = [boardWidth + borderWidth * 2, borderWidth, borderWidth * 4];
-		const argsY = [boardWidth, borderWidth, borderWidth * 4];
+    const argsX = [boardWidth + borderWidth * 2, borderWidth, borderWidth * 2];
+		const argsY = [boardWidth, borderWidth, borderWidth * 2];
 		const boardTexture = useTexture("./img/wood-texture.jpg");
 		const [topRef, api1] = useBox(() => ({
 			type: "Static",
@@ -34,19 +34,19 @@ const Walls = () => {
 			<>
 				<mesh ref={topRef} receiveShadow>
 					<boxGeometry args={argsY} />
-					<meshStandardMaterial color={'red'} />
+					<meshStandardMaterial map={boardTexture} />
 				</mesh>
 				<mesh ref={bottomRef} receiveShadow>
 					<boxGeometry args={argsY} />
-					<meshStandardMaterial color={'red'} />
+					<meshStandardMaterial map={boardTexture} />
 				</mesh>
 				<mesh ref={leftRef} receiveShadow>
 					<boxGeometry args={argsX} />
-					<meshStandardMaterial color={'red'} />
+					<meshStandardMaterial map={boardTexture} />
 				</mesh>
 				<mesh ref={rightRef} receiveShadow>
 					<boxGeometry args={argsX} />
-					<meshStandardMaterial color={'red'} />
+					<meshStandardMaterial map={boardTexture} />
 				</mesh>
 			</>
 		);

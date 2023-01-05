@@ -7,6 +7,7 @@ import Floor from "./Floor";
 import { borderWidth } from "../utils/constant";
 import { NaiveBroadphase } from "cannon-es";
 import { BodyMaterial } from "../utils/bodyMaterial";
+import Boxes from "./Boxes";
 import { useAppStore } from "../store";
 
 const ThreeContent = () => {
@@ -44,7 +45,7 @@ const ThreeContent = () => {
 				</Bounds>
 				<Dice />
 				<Walls />
-
+				<Boxes />
 				<BodyMaterial />
 			</Physics>
 

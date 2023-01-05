@@ -7,4 +7,11 @@ export const useAppStore = create((set) => ({
 	reset: () => set((state) => ({ isThrow: false, isFreeze: false })),
 }));
 
+export const useBoxStore = create((set) => ({
+	inBoard: false,
+	pressed: null,
+	setPressed: (v) => set((state) => ({ pressed: v })),
+	setInBoard: (v) => set((state) => ({ inBoard: v })),
+}));
+
 //Action Creator

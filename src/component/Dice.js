@@ -6,6 +6,8 @@ import * as CANNON from "cannon-es";
 import { diceBodyMaterial } from "../utils/bodyMaterial";
 import * as THREE from "three";
 import { useTexture,useGLTF,Clone } from '@react-three/drei'
+let finishCount = 0;
+const diceArr = [];
 
 const Dices = () => {
   const { scene } = useGLTF("./model/dice.glb");
@@ -82,6 +84,30 @@ const Dices = () => {
 			api.velocity.copy(velocityVector);
 			api.angularVelocity.set(0, 0, 0);
 		}
+		const unsub_velocity = api.velocity.subscribe((v) => {
+			if (v[0] === 0 && v[1] === 0 && v[2] === 0) {
+			  diceArr[i] = {};
+			  finishCount++;
+			  if (finishCount === 3) {
+				setTimeout(() => {
+				  calcDiceResult();
+				}, 100);
+			  }
+			  unsub_velocity();
+			}
+		  });
+		  const unsub_position = api.position.subscribe((v) => {
+		    if (finishCount === 3 && diceArr[i]) {
+		      diceArr[i].position = v;
+		      unsub_position();
+		    }
+		  });
+		  const unsub_quaternion = api.quaternion.subscribe((v) => {
+		    if (finishCount === 3 && diceArr[i]) {
+		      diceArr[i].quaternion = v;
+		      unsub_quaternion();
+		    }
+		  });
 	};
 
 	const calcDiceResult = () => {
@@ -101,44 +127,85 @@ const Dices = () => {
 
 		let result = [];
 
-		// this.diceArr.forEach((dice, i) => {
-		// 	tempMesh.position.copy(dice.body.position);
-		// 	tempMesh.quaternion.copy(dice.body.quaternion);
-
-		// 	let vector = new THREE.Vector3(0, 0, 1);
-		// 	let closestIndex;
-		// 	let closestAngle = Math.PI * 2;
-
-		// 	let normals = tempMesh.geometry.getAttribute("normal").array;
-
-		// 	let length = normals.length;
-		// 	let normal = new THREE.Vector3();
-
-		// 	for (let i = 0; i < length; i += 3) {
-		// 		let index = i / 3;
-
-		// 		normal.set(normals[i], normals[i + 1], normals[i + 2]);
-
-		// 		let angle = normal
-		// 			.clone()
-		// 			.applyQuaternion(dice.body.quaternion)
-		// 			.angleTo(vector);
-
-		// 		if (angle < closestAngle) {
-		// 			closestAngle = angle;
-		// 			closestIndex = index;
-		// 		}
-		// 	}
-
-		// 	for (let number in indexToResult) {
-		// 		if (indexToResult[number].indexOf(closestIndex) !== -1) {
-		// 			result.push(number);
-		// 			break;
-		// 		}
-		// 	}
-		// });
-
-		return result;
+		diceArr.forEach((dice, i) => {
+			tempMesh.position.set(...dice.position);
+			tempMesh.quaternion.set(...dice.quaternion);
+			
+			let vector = new THREE.Vector3(0, 0, 1);
+			let closestIndex;
+			let closestAngle = Math.PI * 2;
+	  
+			let normals = tempMesh.geometry.getAttribute("normal").array;
+	  
+			let length = normals.length;
+			let normal = new THREE.Vector3();
+	  
+			for (let i = 0; i < length; i += 3) {
+			  let index = i / 3;
+	  
+			  normal.set(normals[i], normals[i + 1], normals[i + 2]);
+	  
+			  let qvec3 = new THREE.Quaternion();
+	  
+			  qvec3.set(
+				dice.quaternion[0],
+				dice.quaternion[1],
+				dice.quaternion[2],
+				dice.quaternion[3]
+			  );
+	  
+			  //console.log(qvec3);
+	  
+			  let angle = normal.clone().applyQuaternion(qvec3).angleTo(vector);
+	  
+			  // console.log(angle);
+	  
+			  if (angle < closestAngle) {
+				closestAngle = angle;
+				closestIndex = index;
+			  }
+			}
+	  
+			for (let number in indexToResult) {
+			  if (indexToResult[number].indexOf(closestIndex) !== -1) {
+				result.push(number);
+				break;
+			  }
+			}
+		  });
+	  
+		//   const HandleBetInit = async () => {
+		// 	let res = await axios.post(
+		// 	  "https://luckyshit-backend.onrender.com/betinit"
+		// 	);
+		// 	socket?.current?.emit("BoxData");
+		// 	setBoxReset(!boxreset);
+		// 	alert("Bet has been Started");
+		// 	setReset(true);
+		//   };
+	  
+		//   const BetSettle = async (sum) => {
+		// 	let res = await axios.post(
+		// 	  "https://luckyshit-backend.onrender.com/betsettle",
+		// 	  { sum }
+		// 	);
+		// 	HandleBetInit();
+	  
+		// 	alert("Bet has been Settled !");
+		//   };
+	  
+		  const sum = result.reduce((sum, number, i) => {
+			// if (i === 2) {
+			//   BetSettle(sum);
+			// }
+			return parseInt(sum) + parseInt(number);
+		  });
+	  
+		  document.getElementById("result").style.display = "flex";
+		  document.getElementById("result-value").innerText =
+			result.join(" + ") + " = " + sum;
+			console.log(result.join(" + ") + " = " + sum);
+		
 	};
 
 	return (

@@ -19,9 +19,16 @@ body {
 	position: relative;
 }
 
-#throw-btn {
+#result {
 	position: absolute;
 	top: 20px;
+	left: 20px;
+	font-size: 20px;
+}
+
+#throw-btn {
+	position: absolute;
+	top: 50px;
 	left: 20px;
 	font-size: 20px;
 }
