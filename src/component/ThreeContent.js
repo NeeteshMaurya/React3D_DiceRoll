@@ -8,6 +8,7 @@ import { NaiveBroadphase } from "cannon-es";
 import { BodyMaterial } from "../utils/bodyMaterial";
 import Boxes from "./Boxes";
 import { useBoxStore } from "../store";
+import { angleToRadians } from "../utils/angle";
 
 const ThreeContent = () => {
 	const w = borderWidth;
@@ -22,11 +23,12 @@ const ThreeContent = () => {
 		<>
 			<ambientLight intensity={1.3} color={0x707070} />
 			<spotLight
-				position={[-w / 3, w * 20, w * 20]}
+				position={[-35,0,15]}  //-w / 3, w * 20, w * 20
 				color={0xefdfd5}
 				intensity={4.3}
 				// target-position={[0, 0, 0]}
-				distance={w * 60}
+				distance={120}
+				angle={angleToRadians(30)}
 				castShadow
 				shadow-camera-near={1}
 				shadow-camera-far={100}

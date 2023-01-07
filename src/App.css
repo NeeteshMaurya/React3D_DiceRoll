@@ -9,9 +9,9 @@ body {
 	box-sizing: border-box;
 }
 
-/* canvas {
-	display: block;
-} */
+canvas {
+	margin-right: 20px;
+}
 
 #container {
 	width: 100vw;
