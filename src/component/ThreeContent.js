@@ -1,17 +1,22 @@
 import { Bounds, OrbitControls } from "@react-three/drei";
 import { Debug, Physics, useBox } from "@react-three/cannon";
 import Walls from "./Walls";
-import * as THREE from "three";
 import Dice from "./Dice";
 import Floor from "./Floor";
-import { borderWidth } from "../utils/constant";
+import { borderWidth, boxSize } from "../utils/constant";
 import { NaiveBroadphase } from "cannon-es";
 import { BodyMaterial } from "../utils/bodyMaterial";
 import Boxes from "./Boxes";
-import { useAppStore } from "../store";
+import { useBoxStore } from "../store";
 
 const ThreeContent = () => {
 	const w = borderWidth;
+	//for Drag and Drop
+	const pressed = useBoxStore((state) => state.pressed);
+	const handleMove = (e) => {
+		pressed && pressed.position.set(e.point.x, e.point.y, boxSize / 2);
+		pressed && console.log(pressed.position)
+	};
 
 	return (
 		<>
@@ -35,7 +40,7 @@ const ThreeContent = () => {
 				allowSleep
 			>
 
-				<mesh position={[0, 0, -1]}>
+				<mesh position={[0, 0, -1]} onPointerMove={handleMove}>
 					<planeGeometry args={[100, 100, 1, 1]} />
 					<meshPhongMaterial />
 				</mesh>
